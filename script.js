@@ -410,10 +410,30 @@ function initializeDOMHandlers() {
 
     // Load GitHub projects
     setTimeout(loadGitHubProjects, 500);
+
+    // Initialize new features
+    initializeThemeToggle();
+    animateSkillBars();
+    initializeScrollToTop();
 }
 
 // Initialize when DOM is ready
 document.addEventListener('DOMContentLoaded', initializeDOMHandlers);
+
+// Export functions for testing
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = {
+        initializeThemeToggle,
+        animateSkillBars,
+        initializeScrollToTop,
+        GitHubPortfolio
+    };
+} else if (typeof window !== 'undefined') {
+    // Make functions available globally for testing
+    window.initializeThemeToggle = initializeThemeToggle;
+    window.animateSkillBars = animateSkillBars;
+    window.initializeScrollToTop = initializeScrollToTop;
+}
 
 // Add mobile menu styles
 const style = document.createElement('style');
@@ -460,3 +480,63 @@ style.textContent = `
     }
 `;
 document.head.appendChild(style);
+
+// Theme Toggle Functionality
+function initializeThemeToggle() {
+    const themeToggle = document.getElementById('theme-toggle');
+    const body = document.body;
+
+    // Check for saved theme preference or default to light mode
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    body.setAttribute('data-theme', savedTheme);
+
+    if (themeToggle) {
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = body.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+
+            body.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+        });
+    }
+}
+
+// Skill Progress Bar Animation
+function animateSkillBars() {
+    const skillBars = document.querySelectorAll('.skill-progress-bar');
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const progressBar = entry.target;
+                const percentage = progressBar.getAttribute('data-percentage');
+                progressBar.style.width = percentage + '%';
+                observer.unobserve(progressBar);
+            }
+        });
+    }, { threshold: 0.5 });
+
+    skillBars.forEach(bar => observer.observe(bar));
+}
+
+// Scroll to Top Button
+function initializeScrollToTop() {
+    const scrollButton = document.getElementById('scroll-to-top');
+
+    if (scrollButton) {
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                scrollButton.classList.add('visible');
+            } else {
+                scrollButton.classList.remove('visible');
+            }
+        });
+
+        scrollButton.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+    }
+}
