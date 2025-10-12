@@ -53,9 +53,10 @@
             </div>
             <div class="hero-image">
                 <div class="profile-placeholder">
-                    <!-- Replace this with your photo: -->
-                    <!-- <img src="images/profile.jpg" alt="Anish Nair" class="profile-photo"> -->
-                    <i class="fas fa-user"></i>
+                    <!-- Add your profile photo: -->
+                    <img src="images/profile/profile.jpg" alt="Anish Nair" class="profile-photo"
+                         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <i class="fas fa-user" style="display: none;"></i>
                 </div>
             </div>
         </section>
@@ -271,7 +272,9 @@
                     <!-- All projects will be loaded here from GitHub API -->
                     <div class="project-card" data-category="data-engineering">
                         <div class="project-image">
-                            <div class="project-placeholder">
+                            <img src="images/projects/data-pipeline.jpg" alt="Data Pipeline Project"
+                                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="project-placeholder" style="display: none;">
                                 <i class="fas fa-database"></i>
                             </div>
                         </div>
@@ -296,7 +299,9 @@
 
                     <div class="project-card" data-category="web-development">
                         <div class="project-image">
-                            <div class="project-placeholder">
+                            <img src="images/projects/react-dashboard.jpg" alt="React Dashboard Project"
+                                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="project-placeholder" style="display: none;">
                                 <i class="fas fa-code"></i>
                             </div>
                         </div>
@@ -321,7 +326,9 @@
 
                     <div class="project-card" data-category="machine-learning">
                         <div class="project-image">
-                            <div class="project-placeholder">
+                            <img src="images/projects/ml-prediction.jpg" alt="ML Prediction Model Project"
+                                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="project-placeholder" style="display: none;">
                                 <i class="fas fa-brain"></i>
                             </div>
                         </div>
