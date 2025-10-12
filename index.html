@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anish Nair - Portfolio</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header class="header">
+        <nav class="nav">
+            <div class="nav-brand">
+                <h2>Anish Nair</h2>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="#home" class="nav-link">Home</a></li>
+                <li><a href="#about" class="nav-link">About</a></li>
+                <li><a href="#projects" class="nav-link">Projects</a></li>
+                <li><a href="#skills" class="nav-link">Skills</a></li>
+                <li><a href="#contact" class="nav-link">Contact</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section id="home" class="hero">
+            <div class="hero-content">
+                <h1 class="hero-title">Hello, I'm <span class="highlight">Anish Nair</span></h1>
+                <p class="hero-subtitle">Full Stack Developer & Software Engineer</p>
+                <p class="hero-description">
+                    I create innovative digital solutions with modern technologies.
+                    Passionate about building scalable applications and solving complex problems.
+                </p>
+                <div class="hero-buttons">
+                    <a href="#projects" class="btn btn-primary">View My Work</a>
+                    <a href="#contact" class="btn btn-secondary">Get In Touch</a>
+                </div>
+            </div>
+            <div class="hero-image">
+                <div class="profile-placeholder">
+                    <i class="fas fa-user"></i>
+                </div>
+            </div>
+        </section>
+
+        <section id="about" class="about">
+            <div class="container">
+                <h2 class="section-title">About Me</h2>
+                <div class="about-content">
+                    <div class="about-text">
+                        <p>
+                            I'm a passionate software engineer with expertise in full-stack development.
+                            I enjoy creating efficient, scalable solutions and staying up-to-date with
+                            the latest technologies.
+                        </p>
+                        <p>
+                            When I'm not coding, you can find me exploring new technologies, contributing
+                            to open source projects, or working on personal projects that challenge my skills.
+                        </p>
+                        <div class="about-stats">
+                            <div class="stat">
+                                <h3>2+</h3>
+                                <p>Years Experience</p>
+                            </div>
+                            <div class="stat">
+                                <h3>10+</h3>
+                                <p>Projects Completed</p>
+                            </div>
+                            <div class="stat">
+                                <h3>5+</h3>
+                                <p>Technologies</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="skills" class="skills">
+            <div class="container">
+                <h2 class="section-title">Skills & Technologies</h2>
+                <div class="skills-grid">
+                    <div class="skill-category">
+                        <h3>Frontend</h3>
+                        <div class="skill-items">
+                            <span class="skill-item">JavaScript</span>
+                            <span class="skill-item">React</span>
+                            <span class="skill-item">HTML/CSS</span>
+                            <span class="skill-item">TypeScript</span>
+                            <span class="skill-item">Vue.js</span>
+                        </div>
+                    </div>
+                    <div class="skill-category">
+                        <h3>Backend</h3>
+                        <div class="skill-items">
+                            <span class="skill-item">Node.js</span>
+                            <span class="skill-item">Python</span>
+                            <span class="skill-item">Express</span>
+                            <span class="skill-item">Django</span>
+                            <span class="skill-item">REST APIs</span>
+                        </div>
+                    </div>
+                    <div class="skill-category">
+                        <h3>Database & Tools</h3>
+                        <div class="skill-items">
+                            <span class="skill-item">MongoDB</span>
+                            <span class="skill-item">PostgreSQL</span>
+                            <span class="skill-item">Git</span>
+                            <span class="skill-item">Docker</span>
+                            <span class="skill-item">AWS</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="projects" class="projects">
+            <div class="container">
+                <h2 class="section-title">Featured Projects</h2>
+                <div class="projects-loading" id="projects-loading">
+                    <div class="loading-spinner"></div>
+                    <p>Loading projects from GitHub...</p>
+                </div>
+                <div class="projects-error" id="projects-error" style="display: none;">
+                    <div class="error-message">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <p>Unable to load projects. Please check back later.</p>
+                        <button class="btn btn-secondary" onclick="loadGitHubProjects()">Try Again</button>
+                    </div>
+                </div>
+                <div class="projects-grid" id="projects-grid">
+                    <!-- Projects will be dynamically loaded here -->
+                </div>
+                <div class="projects-footer">
+                    <a href="https://github.com/anishnair" class="btn btn-secondary" target="_blank">
+                        <i class="fab fa-github"></i> View All Projects on GitHub
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="contact">
+            <div class="container">
+                <h2 class="section-title">Get In Touch</h2>
+                <div class="contact-content">
+                    <div class="contact-info">
+                        <h3>Let's work together!</h3>
+                        <p>I'm always interested in new opportunities and exciting projects. Feel free to reach out if you'd like to discuss potential collaborations.</p>
+                        <div class="contact-methods">
+                            <div class="contact-method">
+                                <i class="fas fa-envelope"></i>
+                                <span>anish.nair@example.com</span>
+                            </div>
+                            <div class="contact-method">
+                                <i class="fab fa-linkedin"></i>
+                                <span>linkedin.com/in/anishnair</span>
+                            </div>
+                            <div class="contact-method">
+                                <i class="fab fa-github"></i>
+                                <span>github.com/anishnair</span>
+                            </div>
+                        </div>
+                    </div>
+                    <form class="contact-form">
+                        <div class="form-group">
+                            <input type="text" placeholder="Your Name" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" placeholder="Your Email" required>
+                        </div>
+                        <div class="form-group">
+                            <textarea placeholder="Your Message" rows="5" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Send Message</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 Anish Nair. All rights reserved.</p>
+            <div class="social-links">
+                <a href="#"><i class="fab fa-github"></i></a>
+                <a href="#"><i class="fab fa-linkedin"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // GitHub Configuration - Update this with your GitHub username
+        window.GITHUB_CONFIG = {
+            username: 'anishnair', // Replace with your actual GitHub username
+            maxRepos: 6, // Maximum number of repositories to display
+            excludeRepos: ['anishnair', '.github.io'], // Repositories to exclude
+            includePrivate: false // Set to true if you want to include private repos (requires authentication)
+        };
+    </script>
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,58 @@
+{
+  "name": "anish-nair-portfolio",
+  "version": "1.0.0",
+  "description": "Personal portfolio website with GitHub API integration",
+  "main": "index.html",
+  "scripts": {
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "lint": "eslint *.js",
+    "lint:fix": "eslint *.js --fix",
+    "serve": "python -m http.server 8000",
+    "build": "npm run test && npm run lint",
+    "deploy": "gh-pages -d ."
+  },
+  "devDependencies": {
+    "@babel/core": "^7.22.0",
+    "@babel/preset-env": "^7.22.0",
+    "babel-jest": "^29.5.0",
+    "eslint": "^8.42.0",
+    "gh-pages": "^5.0.0",
+    "jest": "^29.5.0",
+    "jest-environment-jsdom": "^29.5.0"
+  },
+  "jest": {
+    "testEnvironment": "jsdom",
+    "setupFilesAfterEnv": ["<rootDir>/tests/setup.js"],
+    "collectCoverageFrom": [
+      "script.js",
+      "!node_modules/**"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "branches": 70,
+        "functions": 70,
+        "lines": 70,
+        "statements": 70
+      }
+    }
+  },
+  "babel": {
+    "presets": ["@babel/preset-env"]
+  },
+  "keywords": [
+    "portfolio",
+    "github-api",
+    "responsive",
+    "javascript",
+    "frontend"
+  ],
+  "author": "Anish Nair",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/anishnair/anish.nair.github.io.git"
+  },
+  "homepage": "https://anishnair.github.io"
+}
