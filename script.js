@@ -415,6 +415,7 @@ function initializeDOMHandlers() {
     initializeThemeToggle();
     animateSkillBars();
     initializeScrollToTop();
+    initializeProjectFilters();
 }
 
 // Initialize when DOM is ready
@@ -426,6 +427,7 @@ if (typeof module !== 'undefined' && module.exports) {
         initializeThemeToggle,
         animateSkillBars,
         initializeScrollToTop,
+        initializeProjectFilters,
         GitHubPortfolio
     };
 } else if (typeof window !== 'undefined') {
@@ -433,6 +435,7 @@ if (typeof module !== 'undefined' && module.exports) {
     window.initializeThemeToggle = initializeThemeToggle;
     window.animateSkillBars = animateSkillBars;
     window.initializeScrollToTop = initializeScrollToTop;
+    window.initializeProjectFilters = initializeProjectFilters;
 }
 
 // Add mobile menu styles
@@ -539,4 +542,37 @@ function initializeScrollToTop() {
             });
         });
     }
+}
+
+// Project Filters Functionality
+function initializeProjectFilters() {
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    const projectCards = document.querySelectorAll('.project-card');
+
+    if (filterButtons.length === 0) {
+        return;
+    }
+
+    filterButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            // Remove active class from all buttons
+            filterButtons.forEach(btn => btn.classList.remove('active'));
+            // Add active class to clicked button
+            button.classList.add('active');
+
+            const filterValue = button.getAttribute('data-filter');
+
+            // Filter projects
+            projectCards.forEach(card => {
+                const category = card.getAttribute('data-category');
+
+                if (filterValue === 'all' || category === filterValue) {
+                    card.style.display = 'block';
+                    card.style.animation = 'fadeInUp 0.6s ease-out';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+    });
 }
