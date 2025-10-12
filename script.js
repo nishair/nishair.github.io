@@ -510,7 +510,7 @@ function animateSkillBars() {
             if (entry.isIntersecting) {
                 const progressBar = entry.target;
                 const percentage = progressBar.getAttribute('data-percentage');
-                progressBar.style.width = percentage + '%';
+                progressBar.style.width = `${percentage}%`;
                 observer.unobserve(progressBar);
             }
         });
