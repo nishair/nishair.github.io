@@ -9,7 +9,7 @@
     "test:coverage": "jest --coverage",
     "lint": "eslint *.js",
     "lint:fix": "eslint *.js --fix",
-    "serve": "python3 -m http.server 8080",
+    "serve": "npx http-server . -p 3000",
     "build": "npm run test && npm run lint",
     "deploy": "gh-pages -d ."
   },
@@ -19,6 +19,7 @@
     "babel-jest": "^29.5.0",
     "eslint": "^8.42.0",
     "gh-pages": "^5.0.0",
+    "http-server": "^14.1.1",
     "jest": "^29.5.0",
     "jest-environment-jsdom": "^29.5.0"
   },
