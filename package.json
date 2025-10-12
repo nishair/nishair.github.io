@@ -9,7 +9,7 @@
     "test:coverage": "jest --coverage",
     "lint": "eslint *.js",
     "lint:fix": "eslint *.js --fix",
-    "serve": "python -m http.server 8000",
+    "serve": "python3 -m http.server 8080",
     "build": "npm run test && npm run lint",
     "deploy": "gh-pages -d ."
   },

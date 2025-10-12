@@ -1,7 +1,7 @@
 module.exports = {
     ci: {
         collect: {
-            url: ['http://localhost:8000'],
+            url: ['http://localhost:8080'],
             startServerCommand: 'npm run serve',
             startServerReadyPattern: 'Serving HTTP',
             numberOfRuns: 3
