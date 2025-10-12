@@ -17,7 +17,7 @@ document.querySelectorAll('.nav-link').forEach(link => {
 
 // Smooth scrolling for navigation links
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
+    anchor.addEventListener('click', function(e) {
         e.preventDefault();
         const target = document.querySelector(this.getAttribute('href'));
         if (target) {
@@ -49,7 +49,6 @@ function highlightNavLink() {
     let current = '';
     sections.forEach(section => {
         const sectionTop = section.offsetTop;
-        const sectionHeight = section.clientHeight;
         if (pageYOffset >= sectionTop - 200) {
             current = section.getAttribute('id');
         }
@@ -71,19 +70,19 @@ if (contactForm) {
     contactForm.addEventListener('submit', function(e) {
         e.preventDefault();
 
-        // Get form data
-        const formData = new FormData(this);
         const name = this.querySelector('input[type="text"]').value;
         const email = this.querySelector('input[type="email"]').value;
         const message = this.querySelector('textarea').value;
 
         // Basic validation
         if (!name || !email || !message) {
+            // eslint-disable-next-line no-alert
             alert('Please fill in all fields');
             return;
         }
 
         if (!isValidEmail(email)) {
+            // eslint-disable-next-line no-alert
             alert('Please enter a valid email address');
             return;
         }
@@ -97,6 +96,7 @@ if (contactForm) {
 
         // Simulate API call delay
         setTimeout(() => {
+            // eslint-disable-next-line no-alert
             alert('Thank you for your message! I\'ll get back to you soon.');
             this.reset();
             submitBtn.textContent = originalText;
@@ -189,6 +189,7 @@ class GitHubPortfolio {
             this.cache.set(cacheKey, { data, timestamp: Date.now() });
             return data;
         } catch (error) {
+            // eslint-disable-next-line no-console
             console.error('Fetch error:', error);
             throw error;
         }
@@ -306,6 +307,7 @@ let githubPortfolio;
 
 async function loadGitHubProjects() {
     if (!window.GITHUB_CONFIG || !window.GITHUB_CONFIG.username) {
+        // eslint-disable-next-line no-console
         console.error('GitHub configuration not found');
         showProjectsError();
         return;
@@ -332,11 +334,12 @@ async function loadGitHubProjects() {
 
         // Get languages for each repository
         const projectsWithLanguages = await Promise.all(
-            repos.map(async (repo) => {
+            repos.map(async(repo) => {
                 try {
                     const languages = await githubPortfolio.getLanguages(repo.name);
                     return { repo, languages };
                 } catch (error) {
+                    // eslint-disable-next-line no-console
                     console.warn(`Failed to fetch languages for ${repo.name}:`, error);
                     return { repo, languages: {} };
                 }
@@ -372,6 +375,7 @@ async function loadGitHubProjects() {
         }, 100);
 
     } catch (error) {
+        // eslint-disable-next-line no-console
         console.error('Error loading GitHub projects:', error);
         showProjectsError();
     }
