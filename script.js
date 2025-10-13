@@ -195,6 +195,9 @@ async function loadGitHubProjects() {
         return;
     }
 
+    // eslint-disable-next-line no-console
+    console.log('Loading GitHub projects for username:', window.GITHUB_CONFIG.username);
+
     githubPortfolio = new GitHubPortfolio(window.GITHUB_CONFIG);
 
     const loadingElement = document.getElementById('projects-loading');
@@ -213,8 +216,12 @@ async function loadGitHubProjects() {
 
         // Fetch repositories
         const repos = await githubPortfolio.getRepositories();
+        // eslint-disable-next-line no-console
+        console.log('Repositories fetched:', repos.length, repos);
 
         if (repos.length === 0) {
+            // eslint-disable-next-line no-console
+            console.log('No repositories found after filtering');
             throw new Error('No repositories found');
         }
 
