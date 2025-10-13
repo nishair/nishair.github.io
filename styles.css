@@ -334,6 +334,29 @@ section {
     border-radius: 2px;
 }
 
+.subsection-title {
+    font-size: 1.8rem;
+    font-weight: 600;
+    margin-bottom: 2rem;
+    margin-top: 3rem;
+    color: var(--text-primary);
+    text-align: center;
+}
+
+.subsection-title:first-of-type {
+    margin-top: 0;
+}
+
+.github-projects-section,
+.all-projects-section {
+    margin-bottom: 3rem;
+}
+
+.all-projects-section {
+    border-top: 1px solid var(--border-color);
+    padding-top: 2rem;
+}
+
 /* About Section */
 .about {
     background-color: var(--bg-secondary);
