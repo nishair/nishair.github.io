@@ -416,6 +416,7 @@ function initializeDOMHandlers() {
     animateSkillBars();
     initializeScrollToTop();
     initializeProjectFilters();
+    initializeAnalyticsTracking();
 }
 
 // Initialize when DOM is ready
@@ -428,6 +429,7 @@ if (typeof module !== 'undefined' && module.exports) {
         animateSkillBars,
         initializeScrollToTop,
         initializeProjectFilters,
+        initializeAnalyticsTracking,
         GitHubPortfolio
     };
 } else if (typeof window !== 'undefined') {
@@ -436,6 +438,7 @@ if (typeof module !== 'undefined' && module.exports) {
     window.animateSkillBars = animateSkillBars;
     window.initializeScrollToTop = initializeScrollToTop;
     window.initializeProjectFilters = initializeProjectFilters;
+    window.initializeAnalyticsTracking = initializeAnalyticsTracking;
 }
 
 // Add mobile menu styles
@@ -575,4 +578,65 @@ function initializeProjectFilters() {
             });
         });
     });
+}
+
+// Analytics Event Tracking
+function initializeAnalyticsTracking() {
+    // Track resume downloads
+    const resumeButtons = document.querySelectorAll('.download-btn, [href*="resume"], [href*=".pdf"]');
+    resumeButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'file_download', {
+                    file_name: 'resume.pdf',
+                    event_category: 'Resume',
+                    event_label: 'Download'
+                });
+            }
+        });
+    });
+
+    // Track external project links
+    const projectLinks = document.querySelectorAll('.project-link, [href*="github.com"], [href*="linkedin.com"]');
+    projectLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            if (typeof gtag !== 'undefined') {
+                const linkText = link.textContent.trim();
+                const linkHref = link.href;
+                gtag('event', 'click', {
+                    event_category: 'External Link',
+                    event_label: linkText,
+                    event_value: linkHref
+                });
+            }
+        });
+    });
+
+    // Track contact form submissions
+    const contactForm = document.querySelector('.contact-form');
+    if (contactForm) {
+        contactForm.addEventListener('submit', () => {
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'form_submit', {
+                    event_category: 'Contact',
+                    event_label: 'Contact Form'
+                });
+            }
+        });
+    }
+
+    // Track section visits via scroll
+    const sections = document.querySelectorAll('section[id]');
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting && typeof gtag !== 'undefined') {
+                gtag('event', 'scroll', {
+                    event_category: 'Navigation',
+                    event_label: `Section: ${entry.target.id}`
+                });
+            }
+        });
+    }, { threshold: 0.5 });
+
+    sections.forEach(section => observer.observe(section));
 }
