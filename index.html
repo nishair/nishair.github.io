@@ -3,10 +3,110 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Anish Nair - Portfolio</title>
+
+    <!-- SEO Meta Tags -->
+    <title>Anish Nair - Data Engineer & Software Engineer Portfolio</title>
+    <meta name="description" content="Experienced Data Engineer and Software Engineer with 7+ years in building scalable data pipelines, web applications, and machine learning solutions. Masters from Syracuse University.">
+    <meta name="keywords" content="Anish Nair, Data Engineer, Software Engineer, Python, JavaScript, Apache Spark, React, AWS, Machine Learning, Portfolio, Syracuse University">
+    <meta name="author" content="Anish Nair">
+    <meta name="robots" content="index, follow">
+    <meta name="language" content="English">
+    <meta name="revisit-after" content="7 days">
+
+    <!-- Open Graph Meta Tags for Social Media -->
+    <meta property="og:title" content="Anish Nair - Data Engineer & Software Engineer Portfolio">
+    <meta property="og:description" content="Experienced Data Engineer and Software Engineer with 7+ years in building scalable data pipelines, web applications, and machine learning solutions.">
+    <meta property="og:image" content="https://nishair.github.io/anish.nair.github.io/images/profile/profile.jpg">
+    <meta property="og:url" content="https://nishair.github.io/anish.nair.github.io">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Anish Nair Portfolio">
+
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Anish Nair - Data Engineer & Software Engineer Portfolio">
+    <meta name="twitter:description" content="Experienced Data Engineer and Software Engineer with 7+ years in building scalable data pipelines, web applications, and machine learning solutions.">
+    <meta name="twitter:image" content="https://nishair.github.io/anish.nair.github.io/images/profile/profile.jpg">
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://nishair.github.io/anish.nair.github.io">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="images/icons/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="images/icons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="images/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="images/icons/favicon-16x16.png">
+
+    <!-- Preconnect for Performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" as="style">
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" as="style">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <!-- JSON-LD Structured Data for Rich Snippets -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Anish Nair",
+        "jobTitle": ["Data Engineer", "Software Engineer"],
+        "description": "Experienced Data Engineer and Software Engineer with 7+ years in building scalable data pipelines, web applications, and machine learning solutions.",
+        "url": "https://nishair.github.io/anish.nair.github.io",
+        "image": "https://nishair.github.io/anish.nair.github.io/images/profile/profile.jpg",
+        "email": "nishair05@gmail.com",
+        "alumniOf": {
+            "@type": "EducationalOrganization",
+            "name": "Syracuse University",
+            "degree": "Masters"
+        },
+        "knowsAbout": [
+            "Data Engineering",
+            "Software Engineering",
+            "Python",
+            "JavaScript",
+            "Apache Spark",
+            "Apache Kafka",
+            "React",
+            "Node.js",
+            "AWS",
+            "Docker",
+            "Kubernetes",
+            "Machine Learning",
+            "SQL"
+        ],
+        "sameAs": [
+            "https://www.linkedin.com/in/anknair/",
+            "https://github.com/nishair"
+        ],
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https://nishair.github.io/anish.nair.github.io"
+        }
+    }
+    </script>
+
+    <!-- Website Schema -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "Anish Nair Portfolio",
+        "description": "Professional portfolio showcasing data engineering and software engineering projects and skills.",
+        "url": "https://nishair.github.io/anish.nair.github.io",
+        "author": {
+            "@type": "Person",
+            "name": "Anish Nair"
+        },
+        "potentialAction": {
+            "@type": "SearchAction",
+            "target": "https://nishair.github.io/anish.nair.github.io#{search_term_string}",
+            "query-input": "required name=search_term_string"
+        }
+    }
+    </script>
 </head>
 <body>
     <header class="header">
@@ -37,7 +137,7 @@
     </header>
 
     <main>
-        <section id="home" class="hero">
+        <section id="home" class="hero" role="banner">
             <div class="hero-content">
                 <h1 class="hero-title">Hello, I'm <span class="highlight">Anish Nair</span></h1>
                 <p class="hero-subtitle">Data Engineer & Software Engineer</p>
@@ -500,6 +600,6 @@
             includePrivate: false // Set to true if you want to include private repos (requires authentication)
         };
     </script>
-    <script src="script.js"></script>
+    <script src="script.js" defer></script>
 </body>
 </html>
