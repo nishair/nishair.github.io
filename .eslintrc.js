@@ -18,7 +18,8 @@ module.exports = {
         showProjectsError: 'readonly',
         highlightNavLink: 'readonly',
         isValidEmail: 'readonly',
-        typeWriter: 'readonly'
+        typeWriter: 'readonly',
+        gtag: 'readonly'
     },
     rules: {
         // Error Prevention
