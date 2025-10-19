@@ -109,10 +109,36 @@ class GitHubPortfolio {
             .filter(repo => this.config.includePrivate || !repo.private)
             .slice(0, this.config.maxRepos);
 
-        // eslint-disable-next-line no-console
-        console.log('Final filtered forked repositories:', filteredRepos.length, filteredRepos.map(r => r.name));
+        // Check for actual contributions (commits by the user)
+        const reposWithContributions = await this.filterReposWithContributions(filteredRepos);
 
-        return filteredRepos;
+        // eslint-disable-next-line no-console
+        console.log('Final filtered forked repositories with contributions:', reposWithContributions.length, reposWithContributions.map(r => r.name));
+
+        return reposWithContributions;
+    }
+
+    async filterReposWithContributions(repos) {
+        const reposWithContributions = [];
+
+        for (const repo of repos) {
+            try {
+                // Check if user has commits in this repository
+                const commitsUrl = `${this.apiBase}/repos/${this.config.username}/${repo.name}/commits?author=${this.config.username}&per_page=1`;
+                const commits = await this.fetchWithCache(commitsUrl);
+
+                if (commits && commits.length > 0) {
+                    reposWithContributions.push(repo);
+                }
+            } catch (error) {
+                // eslint-disable-next-line no-console
+                console.warn(`Could not check contributions for ${repo.name}:`, error);
+                // Include repo if we can't check (might be due to API limits)
+                reposWithContributions.push(repo);
+            }
+        }
+
+        return reposWithContributions;
     }
 
     async getLanguages(repoName) {
@@ -694,6 +720,74 @@ style.textContent = `
 
     .no-contributions li {
         margin: 0.5rem 0;
+    }
+
+    .opensource-card {
+        max-width: 350px;
+        margin: 0 auto;
+    }
+
+    .opensource-card .project-image {
+        height: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+    }
+
+    .opensource-card .project-content h3 {
+        font-size: 1.1rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .opensource-card .project-content p {
+        font-size: 0.9rem;
+        line-height: 1.4;
+        margin-bottom: 0.75rem;
+    }
+
+    .opensource-card .project-meta {
+        gap: 1rem;
+        font-size: 0.85rem;
+    }
+
+    .opensource-card .project-tech {
+        margin: 0.75rem 0;
+    }
+
+    .opensource-card .project-tech .skill-item {
+        font-size: 0.8rem;
+        padding: 0.2rem 0.5rem;
+    }
+
+    .fork-badge {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        background: rgba(255, 255, 255, 0.9);
+        color: #333;
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-size: 0.7rem;
+        font-weight: 500;
+    }
+
+    .original-repo {
+        font-size: 0.8rem;
+        color: #666;
+        margin-bottom: 0.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.3rem;
+    }
+
+    .original-repo a {
+        color: #0066cc;
+        text-decoration: none;
+    }
+
+    .original-repo a:hover {
+        text-decoration: underline;
     }
 `;
 document.head.appendChild(style);
