@@ -197,6 +197,132 @@
             </div>
         </section>
 
+        <section id="projects" class="projects">
+            <div class="container">
+                <h2 class="section-title">Projects</h2>
+
+                <!-- GitHub Projects Section -->
+                <div class="github-projects-section">
+                    <h3 class="subsection-title">Featured GitHub Projects</h3>
+                    <div class="projects-loading" id="projects-loading">
+                        <div class="loading-spinner"></div>
+                        <p>Loading projects from GitHub...</p>
+                    </div>
+                    <div class="projects-error" id="projects-error" style="display: none;">
+                        <div class="error-message">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <p>Unable to load projects. Please check back later.</p>
+                            <button class="btn btn-secondary" onclick="loadGitHubProjects()">Try Again</button>
+                        </div>
+                    </div>
+                    <div class="projects-grid" id="projects-grid">
+                        <!-- GitHub projects will be dynamically loaded here -->
+                    </div>
+                </div>
+
+                <!-- All Projects Section with Filtering -->
+                <div class="all-projects-section">
+                    <h3 class="subsection-title">All Projects</h3>
+                    <div class="projects-filters">
+                        <button class="filter-btn active" data-filter="all">All</button>
+                        <button class="filter-btn" data-filter="data-engineering">Data Engineering</button>
+                        <button class="filter-btn" data-filter="web-development">Web Development</button>
+                        <button class="filter-btn" data-filter="machine-learning">Machine Learning</button>
+                        <button class="filter-btn" data-filter="automation">Automation</button>
+                    </div>
+                    <div class="all-projects-grid" id="all-projects-grid">
+                        <!-- Static example projects with filtering -->
+                        <div class="project-card" data-category="data-engineering">
+                            <div class="project-image">
+                                <img src="images/projects/data-pipeline.jpg" alt="Data Pipeline Project"
+                                     onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                <div class="project-placeholder" style="display: none;">
+                                    <i class="fas fa-database"></i>
+                                </div>
+                            </div>
+                            <div class="project-content">
+                                <h3>Sample Data Pipeline</h3>
+                                <p>A scalable data pipeline built with Apache Spark and Python for processing large datasets.</p>
+                                <div class="project-tech">
+                                    <span class="tech-tag">Python</span>
+                                    <span class="tech-tag">Apache Spark</span>
+                                    <span class="tech-tag">AWS</span>
+                                </div>
+                                <div class="project-links">
+                                    <a href="#" class="project-link">
+                                        <i class="fab fa-github"></i> Code
+                                    </a>
+                                    <a href="#" class="project-link">
+                                        <i class="fas fa-external-link-alt"></i> Demo
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="project-card" data-category="web-development">
+                            <div class="project-image">
+                                <img src="images/projects/react-dashboard.jpg" alt="React Dashboard Project"
+                                     onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                <div class="project-placeholder" style="display: none;">
+                                    <i class="fas fa-code"></i>
+                                </div>
+                            </div>
+                            <div class="project-content">
+                                <h3>React Dashboard</h3>
+                                <p>Modern dashboard application built with React and TypeScript for data visualization.</p>
+                                <div class="project-tech">
+                                    <span class="tech-tag">React</span>
+                                    <span class="tech-tag">TypeScript</span>
+                                    <span class="tech-tag">D3.js</span>
+                                </div>
+                                <div class="project-links">
+                                    <a href="#" class="project-link">
+                                        <i class="fab fa-github"></i> Code
+                                    </a>
+                                    <a href="#" class="project-link">
+                                        <i class="fas fa-external-link-alt"></i> Live
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="project-card" data-category="machine-learning">
+                            <div class="project-image">
+                                <img src="images/projects/ml-prediction.jpg" alt="ML Prediction Model Project"
+                                     onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                <div class="project-placeholder" style="display: none;">
+                                    <i class="fas fa-brain"></i>
+                                </div>
+                            </div>
+                            <div class="project-content">
+                                <h3>ML Prediction Model</h3>
+                                <p>Machine learning model for predictive analytics using scikit-learn and TensorFlow.</p>
+                                <div class="project-tech">
+                                    <span class="tech-tag">Python</span>
+                                    <span class="tech-tag">TensorFlow</span>
+                                    <span class="tech-tag">Scikit-learn</span>
+                                </div>
+                                <div class="project-links">
+                                    <a href="#" class="project-link">
+                                        <i class="fab fa-github"></i> Code
+                                    </a>
+                                    <a href="#" class="project-link">
+                                        <i class="fas fa-file-alt"></i> Paper
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="projects-footer">
+                    <a href="https://github.com/nishair" class="btn btn-secondary" target="_blank">
+                        <i class="fab fa-github"></i> View All Projects on GitHub
+                    </a>
+                </div>
+            </div>
+        </section>
+
         <section id="skills" class="skills">
             <div class="container">
                 <h2 class="section-title">Skills & Technologies</h2>
@@ -328,132 +454,6 @@
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="projects" class="projects">
-            <div class="container">
-                <h2 class="section-title">Projects</h2>
-
-                <!-- GitHub Projects Section -->
-                <div class="github-projects-section">
-                    <h3 class="subsection-title">Featured GitHub Projects</h3>
-                    <div class="projects-loading" id="projects-loading">
-                        <div class="loading-spinner"></div>
-                        <p>Loading projects from GitHub...</p>
-                    </div>
-                    <div class="projects-error" id="projects-error" style="display: none;">
-                        <div class="error-message">
-                            <i class="fas fa-exclamation-triangle"></i>
-                            <p>Unable to load projects. Please check back later.</p>
-                            <button class="btn btn-secondary" onclick="loadGitHubProjects()">Try Again</button>
-                        </div>
-                    </div>
-                    <div class="projects-grid" id="projects-grid">
-                        <!-- GitHub projects will be dynamically loaded here -->
-                    </div>
-                </div>
-
-                <!-- All Projects Section with Filtering -->
-                <div class="all-projects-section">
-                    <h3 class="subsection-title">All Projects</h3>
-                    <div class="projects-filters">
-                        <button class="filter-btn active" data-filter="all">All</button>
-                        <button class="filter-btn" data-filter="data-engineering">Data Engineering</button>
-                        <button class="filter-btn" data-filter="web-development">Web Development</button>
-                        <button class="filter-btn" data-filter="machine-learning">Machine Learning</button>
-                        <button class="filter-btn" data-filter="automation">Automation</button>
-                    </div>
-                    <div class="all-projects-grid" id="all-projects-grid">
-                        <!-- Static example projects with filtering -->
-                        <div class="project-card" data-category="data-engineering">
-                            <div class="project-image">
-                                <img src="images/projects/data-pipeline.jpg" alt="Data Pipeline Project"
-                                     onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                                <div class="project-placeholder" style="display: none;">
-                                    <i class="fas fa-database"></i>
-                                </div>
-                            </div>
-                            <div class="project-content">
-                                <h3>Sample Data Pipeline</h3>
-                                <p>A scalable data pipeline built with Apache Spark and Python for processing large datasets.</p>
-                                <div class="project-tech">
-                                    <span class="tech-tag">Python</span>
-                                    <span class="tech-tag">Apache Spark</span>
-                                    <span class="tech-tag">AWS</span>
-                                </div>
-                                <div class="project-links">
-                                    <a href="#" class="project-link">
-                                        <i class="fab fa-github"></i> Code
-                                    </a>
-                                    <a href="#" class="project-link">
-                                        <i class="fas fa-external-link-alt"></i> Demo
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="project-card" data-category="web-development">
-                            <div class="project-image">
-                                <img src="images/projects/react-dashboard.jpg" alt="React Dashboard Project"
-                                     onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                                <div class="project-placeholder" style="display: none;">
-                                    <i class="fas fa-code"></i>
-                                </div>
-                            </div>
-                            <div class="project-content">
-                                <h3>React Dashboard</h3>
-                                <p>Modern dashboard application built with React and TypeScript for data visualization.</p>
-                                <div class="project-tech">
-                                    <span class="tech-tag">React</span>
-                                    <span class="tech-tag">TypeScript</span>
-                                    <span class="tech-tag">D3.js</span>
-                                </div>
-                                <div class="project-links">
-                                    <a href="#" class="project-link">
-                                        <i class="fab fa-github"></i> Code
-                                    </a>
-                                    <a href="#" class="project-link">
-                                        <i class="fas fa-external-link-alt"></i> Live
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="project-card" data-category="machine-learning">
-                            <div class="project-image">
-                                <img src="images/projects/ml-prediction.jpg" alt="ML Prediction Model Project"
-                                     onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                                <div class="project-placeholder" style="display: none;">
-                                    <i class="fas fa-brain"></i>
-                                </div>
-                            </div>
-                            <div class="project-content">
-                                <h3>ML Prediction Model</h3>
-                                <p>Machine learning model for predictive analytics using scikit-learn and TensorFlow.</p>
-                                <div class="project-tech">
-                                    <span class="tech-tag">Python</span>
-                                    <span class="tech-tag">TensorFlow</span>
-                                    <span class="tech-tag">Scikit-learn</span>
-                                </div>
-                                <div class="project-links">
-                                    <a href="#" class="project-link">
-                                        <i class="fab fa-github"></i> Code
-                                    </a>
-                                    <a href="#" class="project-link">
-                                        <i class="fas fa-file-alt"></i> Paper
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="projects-footer">
-                    <a href="https://github.com/nishair" class="btn btn-secondary" target="_blank">
-                        <i class="fab fa-github"></i> View All Projects on GitHub
-                    </a>
                 </div>
             </div>
         </section>
