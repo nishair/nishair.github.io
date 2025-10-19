@@ -97,11 +97,22 @@ class GitHubPortfolio {
         const url = `${this.apiBase}/users/${this.config.username}/repos?sort=updated&per_page=50`;
         const repos = await this.fetchWithCache(url);
 
-        return repos
-            .filter(repo => repo.fork) // Include only forked repositories
+        // eslint-disable-next-line no-console
+        console.log('All repositories:', repos.length);
+
+        const forkedRepos = repos.filter(repo => repo.fork);
+        // eslint-disable-next-line no-console
+        console.log('Forked repositories before filtering:', forkedRepos.length, forkedRepos.map(r => r.name));
+
+        const filteredRepos = forkedRepos
             .filter(repo => !this.config.excludeRepos.some(excluded => repo.name.includes(excluded)))
             .filter(repo => this.config.includePrivate || !repo.private)
             .slice(0, this.config.maxRepos);
+
+        // eslint-disable-next-line no-console
+        console.log('Final filtered forked repositories:', filteredRepos.length, filteredRepos.map(r => r.name));
+
+        return filteredRepos;
     }
 
     async getLanguages(repoName) {
@@ -391,8 +402,8 @@ async function loadOpenSourceProjects() {
 
         if (repos.length === 0) {
             // eslint-disable-next-line no-console
-            console.log('No forked repositories found');
-            gridElement.innerHTML = '<p class="no-contributions">No open source contributions found yet. Check back later!</p>';
+            console.log('No forked repositories found after filtering');
+            gridElement.innerHTML = '<div class="no-contributions"><i class="fas fa-code-branch"></i><p>No open source contributions found yet. This could be because:</p><ul><li>No forked repositories in your GitHub account</li><li>All forked repositories are private</li><li>Repositories are filtered out by configuration</li></ul><p>Check back later!</p></div>';
             loadingElement.style.display = 'none';
             return;
         }
@@ -658,6 +669,31 @@ style.textContent = `
         .nav-link.active {
             color: var(--primary-color);
         }
+    }
+
+    .no-contributions {
+        text-align: center;
+        padding: 3rem 2rem;
+        color: #666;
+        background: #f8f9fa;
+        border-radius: 8px;
+        margin: 2rem 0;
+    }
+
+    .no-contributions i {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+        color: #999;
+    }
+
+    .no-contributions ul {
+        text-align: left;
+        max-width: 400px;
+        margin: 1rem auto;
+    }
+
+    .no-contributions li {
+        margin: 0.5rem 0;
     }
 `;
 document.head.appendChild(style);
