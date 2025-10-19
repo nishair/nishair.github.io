@@ -66,7 +66,15 @@ class GitHubPortfolio {
         try {
             // eslint-disable-next-line no-console
             console.log('Fetching from GitHub API:', url);
-            const response = await fetch(url);
+
+            const headers = {};
+            if (this.config.token) {
+                headers.Authorization = `token ${this.config.token}`;
+                // eslint-disable-next-line no-console
+                console.log('Using GitHub token for authentication');
+            }
+
+            const response = await fetch(url, { headers });
 
             // eslint-disable-next-line no-console
             console.log('GitHub API Response:', response.status, response.statusText);
@@ -75,9 +83,14 @@ class GitHubPortfolio {
                 if (response.status === 403) {
                     const rateLimit = response.headers.get('X-RateLimit-Remaining');
                     const resetTime = response.headers.get('X-RateLimit-Reset');
+                    const resetDate = new Date(resetTime * 1000);
                     // eslint-disable-next-line no-console
-                    console.error('GitHub API Rate Limit:', { remaining: rateLimit, resetTime });
-                    throw new Error(`GitHub API rate limit exceeded. Remaining: ${rateLimit}, Reset: ${new Date(resetTime * 1000)}`);
+                    console.error('GitHub API Rate Limit:', { remaining: rateLimit, resetTime, resetDate });
+
+                    const now = new Date();
+                    const minutesUntilReset = Math.ceil((resetDate - now) / 60000);
+
+                    throw new Error(`GitHub API rate limit exceeded. Try again in ${minutesUntilReset} minutes (${resetDate.toLocaleTimeString()})`);
                 }
                 throw new Error(`HTTP ${response.status}: ${response.statusText}`);
             }
@@ -690,13 +703,19 @@ if (typeof module !== 'undefined' && module.exports) {
 
     // Debug function for testing GitHub API
     window.testGitHubAPI = async function(username = 'nishair') {
-        try {
-            const response = await fetch(`https://api.github.com/users/${username}`);
-            console.log('Test API Response:', response.status, response.statusText);
+        console.log('=== GitHub API Debug Test ===');
+        console.log('Testing username:', username);
 
-            if (response.ok) {
-                const data = await response.json();
-                console.log('User data:', data);
+        try {
+            // Test user endpoint
+            const userResponse = await fetch(`https://api.github.com/users/${username}`);
+            console.log('User API Response:', userResponse.status, userResponse.statusText);
+            console.log('Response headers:', Object.fromEntries(userResponse.headers.entries()));
+
+            if (userResponse.ok) {
+                const userData = await userResponse.json();
+                console.log('✅ User found:', userData.login, userData.name);
+                console.log('Public repos:', userData.public_repos);
 
                 // Test repos endpoint
                 const reposResponse = await fetch(`https://api.github.com/users/${username}/repos?per_page=5`);
@@ -704,15 +723,40 @@ if (typeof module !== 'undefined' && module.exports) {
 
                 if (reposResponse.ok) {
                     const repos = await reposResponse.json();
-                    console.log('Repositories:', repos.length, repos.map(r => ({ name: r.name, fork: r.fork })));
+                    console.log('✅ Repositories found:', repos.length);
+                    repos.forEach(repo => {
+                        console.log(`  - ${repo.name} (fork: ${repo.fork}, private: ${repo.private})`);
+                    });
                 } else {
-                    console.error('Repos API failed:', await reposResponse.text());
+                    const errorText = await reposResponse.text();
+                    console.error('❌ Repos API failed:', errorText);
                 }
             } else {
-                console.error('User API failed:', await response.text());
+                const errorText = await userResponse.text();
+                console.error('❌ User not found or API error:', errorText);
+
+                // Test with alternative usernames
+                console.log('Testing alternative usernames...');
+                const alternatives = ['anknair', 'ank-nair', 'nishair05'];
+                for (const alt of alternatives) {
+                    const altResponse = await fetch(`https://api.github.com/users/${alt}`);
+                    console.log(`${alt}: ${altResponse.status} ${altResponse.statusText}`);
+                    if (altResponse.ok) {
+                        const altData = await altResponse.json();
+                        console.log(`✅ Found alternative: ${alt} (${altData.name})`);
+                    }
+                }
             }
+
+            // Check rate limit status
+            const rateLimitResponse = await fetch('https://api.github.com/rate_limit');
+            if (rateLimitResponse.ok) {
+                const rateLimitData = await rateLimitResponse.json();
+                console.log('Current rate limit status:', rateLimitData);
+            }
+
         } catch (error) {
-            console.error('Test API Error:', error);
+            console.error('❌ Network or API Error:', error);
         }
     };
 }
