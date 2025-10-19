@@ -93,6 +93,17 @@ class GitHubPortfolio {
             .slice(0, this.config.maxRepos);
     }
 
+    async getForkedRepositories() {
+        const url = `${this.apiBase}/users/${this.config.username}/repos?sort=updated&per_page=50`;
+        const repos = await this.fetchWithCache(url);
+
+        return repos
+            .filter(repo => repo.fork) // Include only forked repositories
+            .filter(repo => !this.config.excludeRepos.some(excluded => repo.name.includes(excluded)))
+            .filter(repo => this.config.includePrivate || !repo.private)
+            .slice(0, this.config.maxRepos);
+    }
+
     async getLanguages(repoName) {
         const url = `${this.apiBase}/repos/${this.config.username}/${repoName}/languages`;
         try {
@@ -175,6 +186,64 @@ class GitHubPortfolio {
                     <div class="project-links">
                         <a href="${repo.html_url}" class="project-link" target="_blank" rel="noopener">
                             <i class="fab fa-github"></i> Code
+                        </a>
+                        ${demoLink}
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    createOpenSourceCard(repo, languages) {
+        const primaryLanguage = Object.keys(languages)[0] || 'Code';
+        const languageIcon = this.getLanguageIcon(primaryLanguage);
+        const topLanguages = Object.keys(languages).slice(0, 3);
+
+        const description = repo.description || 'No description available.';
+        const lastUpdated = this.formatDate(repo.updated_at);
+        const originalRepo = repo.parent || repo;
+
+        // Create live demo link if homepage exists
+        const demoLink = repo.homepage ?
+            `<a href="${repo.homepage}" class="project-link" target="_blank" rel="noopener">
+                <i class="fas fa-external-link-alt"></i> Live Demo
+            </a>` : '';
+
+        return `
+            <div class="project-card opensource-card">
+                <div class="project-image">
+                    <i class="${languageIcon}"></i>
+                    <div class="fork-badge">
+                        <i class="fas fa-code-branch"></i> Fork
+                    </div>
+                </div>
+                <div class="project-content">
+                    <h3>${repo.name.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}</h3>
+                    <p>${description}</p>
+                    <div class="original-repo">
+                        <i class="fas fa-arrow-up"></i>
+                        <span>Forked from <a href="${originalRepo.html_url}" target="_blank" rel="noopener">${originalRepo.full_name}</a></span>
+                    </div>
+                    <div class="project-meta">
+                        <span class="project-stars">
+                            <i class="fas fa-star"></i> ${originalRepo.stargazers_count || repo.stargazers_count}
+                        </span>
+                        <span class="project-forks">
+                            <i class="fas fa-code-branch"></i> ${originalRepo.forks_count || repo.forks_count}
+                        </span>
+                        <span class="project-updated">
+                            <i class="fas fa-clock"></i> ${lastUpdated}
+                        </span>
+                    </div>
+                    <div class="project-tech">
+                        ${topLanguages.map(lang => `<span class="skill-item">${lang}</span>`).join('')}
+                    </div>
+                    <div class="project-links">
+                        <a href="${repo.html_url}" class="project-link" target="_blank" rel="noopener">
+                            <i class="fab fa-github"></i> My Fork
+                        </a>
+                        <a href="${originalRepo.html_url}" class="project-link" target="_blank" rel="noopener">
+                            <i class="fas fa-external-link-alt"></i> Original
                         </a>
                         ${demoLink}
                     </div>
@@ -277,6 +346,103 @@ async function loadGitHubProjects() {
 function showProjectsError() {
     const loadingElement = document.getElementById('projects-loading');
     const errorElement = document.getElementById('projects-error');
+
+    if (loadingElement) {
+        loadingElement.style.display = 'none';
+    }
+    if (errorElement) {
+        errorElement.style.display = 'block';
+    }
+}
+
+async function loadOpenSourceProjects() {
+    if (!window.GITHUB_CONFIG || !window.GITHUB_CONFIG.username) {
+        // eslint-disable-next-line no-console
+        console.error('GitHub configuration not found');
+        showOpenSourceError();
+        return;
+    }
+
+    // eslint-disable-next-line no-console
+    console.log('Loading open source contributions for username:', window.GITHUB_CONFIG.username);
+
+    if (!githubPortfolio) {
+        githubPortfolio = new GitHubPortfolio(window.GITHUB_CONFIG);
+    }
+
+    const loadingElement = document.getElementById('opensource-loading');
+    const errorElement = document.getElementById('opensource-error');
+    const gridElement = document.getElementById('opensource-grid');
+
+    if (!loadingElement || !errorElement || !gridElement) {
+        return;
+    }
+
+    try {
+        // Show loading state
+        loadingElement.style.display = 'block';
+        errorElement.style.display = 'none';
+        gridElement.innerHTML = '';
+
+        // Fetch forked repositories
+        const repos = await githubPortfolio.getForkedRepositories();
+        // eslint-disable-next-line no-console
+        console.log('Forked repositories fetched:', repos.length, repos);
+
+        if (repos.length === 0) {
+            // eslint-disable-next-line no-console
+            console.log('No forked repositories found');
+            gridElement.innerHTML = '<p class="no-contributions">No open source contributions found yet. Check back later!</p>';
+            loadingElement.style.display = 'none';
+            return;
+        }
+
+        // Get languages for each repository
+        const projectsWithLanguages = await Promise.all(
+            repos.map(async(repo) => {
+                try {
+                    const languages = await githubPortfolio.getLanguages(repo.name);
+                    return { repo, languages };
+                } catch (error) {
+                    // eslint-disable-next-line no-console
+                    console.warn(`Failed to fetch languages for ${repo.name}:`, error);
+                    return { repo, languages: {} };
+                }
+            })
+        );
+
+        // Create project cards
+        const projectCards = projectsWithLanguages
+            .map(({ repo, languages }) => githubPortfolio.createOpenSourceCard(repo, languages))
+            .join('');
+
+        // Update the grid
+        gridElement.innerHTML = projectCards;
+
+        // Hide loading state
+        loadingElement.style.display = 'none';
+
+        // Trigger animations
+        setTimeout(() => {
+            const cards = document.querySelectorAll('.opensource-card');
+            cards.forEach((card, index) => {
+                setTimeout(() => {
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, index * 100);
+            });
+        }, 100);
+
+    } catch (error) {
+        // eslint-disable-next-line no-console
+        console.error('Error loading open source projects:', error);
+        showOpenSourceError();
+    }
+}
+
+function showOpenSourceError() {
+    const loadingElement = document.getElementById('opensource-loading');
+    const errorElement = document.getElementById('opensource-error');
 
     if (loadingElement) {
         loadingElement.style.display = 'none';
@@ -407,7 +573,7 @@ function initializeDOMHandlers() {
     }, observerOptions);
 
     // Observe elements for animation
-    const animateElements = document.querySelectorAll('.project-card, .skill-category, .stat');
+    const animateElements = document.querySelectorAll('.project-card, .opensource-card, .skill-category, .stat');
     animateElements.forEach(el => {
         el.style.opacity = '0';
         el.style.transform = 'translateY(30px)';
@@ -415,8 +581,9 @@ function initializeDOMHandlers() {
         observer.observe(el);
     });
 
-    // Load GitHub projects
+    // Load GitHub projects and open source contributions
     setTimeout(loadGitHubProjects, 500);
+    setTimeout(loadOpenSourceProjects, 1000);
 
     // Initialize new features
     initializeThemeToggle();
@@ -446,6 +613,7 @@ if (typeof module !== 'undefined' && module.exports) {
     window.initializeScrollToTop = initializeScrollToTop;
     window.initializeProjectFilters = initializeProjectFilters;
     window.initializeAnalyticsTracking = initializeAnalyticsTracking;
+    window.loadOpenSourceProjects = loadOpenSourceProjects;
 }
 
 // Add mobile menu styles

@@ -200,10 +200,16 @@
         <section id="projects" class="projects">
             <div class="container">
                 <h2 class="section-title">Projects</h2>
+                <div class="section-description">
+                    <p>Explore my portfolio of data engineering, web development, and machine learning projects.
+                       Each project demonstrates my expertise in building scalable solutions, implementing modern technologies,
+                       and solving real-world problems through innovative approaches.</p>
+                </div>
 
                 <!-- GitHub Projects Section -->
                 <div class="github-projects-section">
                     <h3 class="subsection-title">Featured GitHub Projects</h3>
+                    <p class="subsection-description">Automatically loaded from my GitHub repositories, showcasing recent work and contributions to open source projects.</p>
                     <div class="projects-loading" id="projects-loading">
                         <div class="loading-spinner"></div>
                         <p>Loading projects from GitHub...</p>
@@ -223,6 +229,7 @@
                 <!-- All Projects Section with Filtering -->
                 <div class="all-projects-section">
                     <h3 class="subsection-title">All Projects</h3>
+                    <p class="subsection-description">Browse through a curated collection of projects spanning different technologies and domains. Use the filters below to explore specific areas of interest.</p>
                     <div class="projects-filters">
                         <button class="filter-btn active" data-filter="all">All</button>
                         <button class="filter-btn" data-filter="data-engineering">Data Engineering</button>
@@ -312,6 +319,26 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </div>
+
+                <!-- Open Source Contributions Section -->
+                <div class="opensource-section">
+                    <h3 class="subsection-title">Open Source Contributions</h3>
+                    <p class="subsection-description">My contributions to open source projects, including bug fixes, feature enhancements, and community collaborations. These forked repositories showcase my involvement in improving existing tools and libraries.</p>
+                    <div class="opensource-loading" id="opensource-loading">
+                        <div class="loading-spinner"></div>
+                        <p>Loading open source contributions...</p>
+                    </div>
+                    <div class="opensource-error" id="opensource-error" style="display: none;">
+                        <div class="error-message">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <p>Unable to load contributions. Please check back later.</p>
+                            <button class="btn btn-secondary" onclick="loadOpenSourceProjects()">Try Again</button>
+                        </div>
+                    </div>
+                    <div class="opensource-grid" id="opensource-grid">
+                        <!-- Open source contributions will be dynamically loaded here -->
                     </div>
                 </div>
 
