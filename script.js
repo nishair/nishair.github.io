@@ -58,21 +58,39 @@ class GitHubPortfolio {
         const cached = this.cache.get(cacheKey);
 
         if (cached && Date.now() - cached.timestamp < this.cacheTimeout) {
+            // eslint-disable-next-line no-console
+            console.log('Using cached data for:', url);
             return cached.data;
         }
 
         try {
+            // eslint-disable-next-line no-console
+            console.log('Fetching from GitHub API:', url);
             const response = await fetch(url);
+
+            // eslint-disable-next-line no-console
+            console.log('GitHub API Response:', response.status, response.statusText);
+
             if (!response.ok) {
+                if (response.status === 403) {
+                    const rateLimit = response.headers.get('X-RateLimit-Remaining');
+                    const resetTime = response.headers.get('X-RateLimit-Reset');
+                    // eslint-disable-next-line no-console
+                    console.error('GitHub API Rate Limit:', { remaining: rateLimit, resetTime });
+                    throw new Error(`GitHub API rate limit exceeded. Remaining: ${rateLimit}, Reset: ${new Date(resetTime * 1000)}`);
+                }
                 throw new Error(`HTTP ${response.status}: ${response.statusText}`);
             }
 
             const data = await response.json();
+            // eslint-disable-next-line no-console
+            console.log('GitHub API Data received:', Array.isArray(data) ? `${data.length} items` : 'Single object');
+
             this.cache.set(cacheKey, { data, timestamp: Date.now() });
             return data;
         } catch (error) {
             // eslint-disable-next-line no-console
-            console.error('Fetch error:', error);
+            console.error('Fetch error for URL:', url, error);
             throw error;
         }
     }
@@ -297,12 +315,13 @@ async function loadGitHubProjects() {
     if (!window.GITHUB_CONFIG || !window.GITHUB_CONFIG.username) {
         // eslint-disable-next-line no-console
         console.error('GitHub configuration not found');
-        showProjectsError();
+        showProjectsError('GitHub configuration not found. Please check GITHUB_CONFIG.');
         return;
     }
 
     // eslint-disable-next-line no-console
     console.log('Loading GitHub projects for username:', window.GITHUB_CONFIG.username);
+    console.log('GitHub Config:', window.GITHUB_CONFIG);
 
     githubPortfolio = new GitHubPortfolio(window.GITHUB_CONFIG);
 
@@ -376,11 +395,11 @@ async function loadGitHubProjects() {
     } catch (error) {
         // eslint-disable-next-line no-console
         console.error('Error loading GitHub projects:', error);
-        showProjectsError();
+        showProjectsError(error.message);
     }
 }
 
-function showProjectsError() {
+function showProjectsError(errorMessage = '') {
     const loadingElement = document.getElementById('projects-loading');
     const errorElement = document.getElementById('projects-error');
 
@@ -389,6 +408,22 @@ function showProjectsError() {
     }
     if (errorElement) {
         errorElement.style.display = 'block';
+
+        // Update error message if provided
+        if (errorMessage) {
+            const errorMessageElement = errorElement.querySelector('.error-message p');
+            if (errorMessageElement) {
+                if (errorMessage.includes('rate limit')) {
+                    errorMessageElement.textContent = 'GitHub API rate limit exceeded. Please try again later.';
+                } else if (errorMessage.includes('404')) {
+                    errorMessageElement.textContent = 'GitHub user not found. Please check the username configuration.';
+                } else if (errorMessage.includes('403')) {
+                    errorMessageElement.textContent = 'Access denied to GitHub API. Rate limit may be exceeded.';
+                } else {
+                    errorMessageElement.textContent = `Error: ${errorMessage}`;
+                }
+            }
+        }
     }
 }
 
@@ -651,6 +686,35 @@ if (typeof module !== 'undefined' && module.exports) {
     window.initializeProjectFilters = initializeProjectFilters;
     window.initializeAnalyticsTracking = initializeAnalyticsTracking;
     window.loadOpenSourceProjects = loadOpenSourceProjects;
+    window.loadGitHubProjects = loadGitHubProjects;
+
+    // Debug function for testing GitHub API
+    window.testGitHubAPI = async function(username = 'nishair') {
+        try {
+            const response = await fetch(`https://api.github.com/users/${username}`);
+            console.log('Test API Response:', response.status, response.statusText);
+
+            if (response.ok) {
+                const data = await response.json();
+                console.log('User data:', data);
+
+                // Test repos endpoint
+                const reposResponse = await fetch(`https://api.github.com/users/${username}/repos?per_page=5`);
+                console.log('Repos API Response:', reposResponse.status, reposResponse.statusText);
+
+                if (reposResponse.ok) {
+                    const repos = await reposResponse.json();
+                    console.log('Repositories:', repos.length, repos.map(r => ({ name: r.name, fork: r.fork })));
+                } else {
+                    console.error('Repos API failed:', await reposResponse.text());
+                }
+            } else {
+                console.error('User API failed:', await response.text());
+            }
+        } catch (error) {
+            console.error('Test API Error:', error);
+        }
+    };
 }
 
 // Add mobile menu styles
