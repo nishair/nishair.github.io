@@ -181,6 +181,53 @@ class GitHubPortfolio {
         }
     }
 
+    async getReadmeContent(repoName) {
+        if (!this.config.fetchReadmes) {
+            return null;
+        }
+
+        const url = `${this.apiBase}/repos/${this.config.username}/${repoName}/readme`;
+        try {
+            const response = await this.fetchWithCache(url);
+            if (response && response.content) {
+                // GitHub returns base64 encoded content
+                const content = atob(response.content);
+                // Extract first paragraph or summary (remove markdown formatting)
+                const cleanContent = content
+                    .replace(/#{1,6}\s+/g, '') // Remove headers
+                    .replace(/\*\*(.*?)\*\*/g, '$1') // Remove bold
+                    .replace(/\*(.*?)\*/g, '$1') // Remove italic
+                    .replace(/`(.*?)`/g, '$1') // Remove inline code
+                    .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1') // Remove links, keep text
+                    .replace(/\n\s*\n/g, '\n') // Remove empty lines
+                    .split('\n')
+                    .filter(line => line.trim().length > 0)
+                    .slice(0, 3) // Take first 3 non-empty lines
+                    .join(' ')
+                    .substring(0, this.config.readmeMaxLength || 500);
+
+                return cleanContent || null;
+            }
+        } catch (error) {
+            // eslint-disable-next-line no-console
+            console.warn(`Could not fetch README for ${repoName}:`, error);
+        }
+        return null;
+    }
+
+    getProjectDescription(repo) {
+        const repoName = repo.name;
+        const customConfig = this.config.projectDescriptions?.[repoName];
+
+        return {
+            shortDescription: customConfig?.description || repo.description || 'No description available.',
+            longDescription: customConfig?.longDescription || null,
+            highlights: customConfig?.highlights || [],
+            demoUrl: customConfig?.demoUrl || repo.homepage || null,
+            category: customConfig?.category || 'general'
+        };
+    }
+
     getLanguageIcon(language) {
         const icons = {
             'JavaScript': 'fab fa-js-square',
@@ -215,28 +262,37 @@ class GitHubPortfolio {
         });
     }
 
-    createProjectCard(repo, languages) {
+    createProjectCard(repo, languages, readmeContent = null) {
         const primaryLanguage = Object.keys(languages)[0] || 'Code';
         const languageIcon = this.getLanguageIcon(primaryLanguage);
         const topLanguages = Object.keys(languages).slice(0, 3);
 
-        const description = repo.description || 'No description available.';
+        const projectDesc = this.getProjectDescription(repo);
+        const description = projectDesc.longDescription || readmeContent || projectDesc.shortDescription;
         const lastUpdated = this.formatDate(repo.updated_at);
 
-        // Create live demo link if homepage exists
-        const demoLink = repo.homepage ?
-            `<a href="${repo.homepage}" class="project-link" target="_blank" rel="noopener">
+        // Create demo link - prioritize custom demoUrl, then homepage
+        const demoUrl = projectDesc.demoUrl || repo.homepage;
+        const demoLink = demoUrl ?
+            `<a href="${demoUrl}" class="project-link" target="_blank" rel="noopener">
                 <i class="fas fa-external-link-alt"></i> Live Demo
             </a>` : '';
 
+        // Create highlights section if available
+        const highlightsSection = projectDesc.highlights.length > 0 ?
+            `<div class="project-highlights">
+                ${projectDesc.highlights.map(highlight => `<span class="highlight-tag">${highlight}</span>`).join('')}
+            </div>` : '';
+
         return `
-            <div class="project-card">
+            <div class="project-card" data-category="${projectDesc.category}">
                 <div class="project-image">
                     <i class="${languageIcon}"></i>
                 </div>
                 <div class="project-content">
                     <h3>${repo.name.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}</h3>
-                    <p>${description}</p>
+                    <p class="project-description">${description}</p>
+                    ${highlightsSection}
                     <div class="project-meta">
                         <span class="project-stars">
                             <i class="fas fa-star"></i> ${repo.stargazers_count}
@@ -363,23 +419,27 @@ async function loadGitHubProjects() {
             throw new Error('No repositories found');
         }
 
-        // Get languages for each repository
-        const projectsWithLanguages = await Promise.all(
+        // Get languages and README content for each repository
+        const projectsWithData = await Promise.all(
             repos.map(async(repo) => {
                 try {
-                    const languages = await githubPortfolio.getLanguages(repo.name);
-                    return { repo, languages };
+                    const [languages, readmeContent] = await Promise.all([
+                        githubPortfolio.getLanguages(repo.name),
+                        githubPortfolio.getReadmeContent(repo.name)
+                    ]);
+                    return { repo, languages, readmeContent };
                 } catch (error) {
                     // eslint-disable-next-line no-console
-                    console.warn(`Failed to fetch languages for ${repo.name}:`, error);
-                    return { repo, languages: {} };
+                    console.warn(`Failed to fetch data for ${repo.name}:`, error);
+                    return { repo, languages: {}, readmeContent: null };
                 }
             })
         );
 
-        // Create project cards
-        const projectCards = projectsWithLanguages
-            .map(({ repo, languages }) => githubPortfolio.createProjectCard(repo, languages))
+        // Create project cards with enhanced descriptions
+        const projectCards = projectsWithData
+            .map(({ repo, languages, readmeContent }) =>
+                githubPortfolio.createProjectCard(repo, languages, readmeContent))
             .join('');
 
         // Update the grid
@@ -896,6 +956,38 @@ style.textContent = `
 
     .original-repo a:hover {
         text-decoration: underline;
+    }
+
+    .project-description {
+        font-size: 0.9rem;
+        line-height: 1.5;
+        color: #666;
+        margin-bottom: 1rem;
+    }
+
+    .project-highlights {
+        margin: 0.75rem 0;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+
+    .highlight-tag {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 0.2rem 0.6rem;
+        border-radius: 12px;
+        font-size: 0.75rem;
+        font-weight: 500;
+        display: inline-block;
+    }
+
+    .project-card .project-description {
+        min-height: 3rem;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
     }
 `;
 document.head.appendChild(style);

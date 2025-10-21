@@ -665,6 +665,29 @@
             // Optional: Add your GitHub Personal Access Token to increase rate limits
             // Generate at: https://github.com/settings/tokens (only need 'public_repo' scope)
             // token: 'github_pat_your_token_here' // Uncomment and add your token to get 5000 requests/hour
+
+            // Enhanced project descriptions - Add custom descriptions for your repositories
+            projectDescriptions: {
+                // Example: 'repository-name': {
+                //     description: 'Custom description that overrides GitHub description',
+                //     longDescription: 'Detailed description for the project card',
+                //     highlights: ['Key feature 1', 'Key feature 2', 'Key feature 3'],
+                //     demoUrl: 'https://your-demo-url.com',
+                //     category: 'data-engineering' // or 'web-development', 'machine-learning', 'automation'
+                // }
+
+                // Add your project descriptions here:
+                // 'my-data-pipeline': {
+                //     description: 'Scalable ETL pipeline processing 1M+ records daily',
+                //     longDescription: 'A production-ready data pipeline built with Apache Spark and Python that processes over 1 million healthcare records daily, featuring automated data quality checks and real-time monitoring.',
+                //     highlights: ['Apache Spark', 'Real-time processing', 'Data quality checks'],
+                //     category: 'data-engineering'
+                // }
+            },
+
+            // Enable README fetching for enhanced descriptions
+            fetchReadmes: true, // Set to false to disable README fetching
+            readmeMaxLength: 500 // Maximum characters to extract from README
         };
     </script>
     <script src="script.js" defer></script>
