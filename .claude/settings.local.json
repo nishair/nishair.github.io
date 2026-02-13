@@ -9,7 +9,9 @@
       "Bash(npm run serve:*)",
       "Bash(npm test:*)",
       "Bash(git checkout:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git filter-branch:*)"
     ],
     "deny": [],
     "ask": []
