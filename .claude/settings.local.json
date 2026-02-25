@@ -8,8 +8,13 @@
       "Bash(npm run test:coverage:*)",
       "Bash(npm run serve:*)",
       "Bash(npm test:*)",
-      "Bash(git rebase:*)",
-      "Bash(git add:*)"
+      "Bash(git checkout:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git filter-branch:*)",
+      "Bash(git log:*)",
+      "Bash(git push:*)",
+      "Bash(git reset HEAD~1)"
     ],
     "deny": [],
     "ask": []
