@@ -8,6 +8,7 @@
       "Bash(npm run test:coverage:*)",
       "Bash(npm run serve:*)",
       "Bash(npm test:*)",
+      "Bash(git rebase:*)",
       "Bash(git checkout:*)",
       "Bash(git add:*)",
       "Bash(git commit:*)",
