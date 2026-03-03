@@ -1085,19 +1085,27 @@ function initializeProjectFilters() {
     });
 }
 
+// Analytics helper to track events on both Google Analytics and Amplitude
+function trackEvent(eventName, properties) {
+    if (typeof gtag !== 'undefined') {
+        gtag('event', eventName, properties);
+    }
+    if (typeof amplitude !== 'undefined') {
+        amplitude.track(eventName, properties);
+    }
+}
+
 // Analytics Event Tracking
 function initializeAnalyticsTracking() {
     // Track resume downloads
     const resumeButtons = document.querySelectorAll('.download-btn, [href*="resume"], [href*=".pdf"]');
     resumeButtons.forEach(button => {
         button.addEventListener('click', () => {
-            if (typeof gtag !== 'undefined') {
-                gtag('event', 'file_download', {
-                    file_name: 'resume.pdf',
-                    event_category: 'Resume',
-                    event_label: 'Download'
-                });
-            }
+            trackEvent('file_download', {
+                file_name: 'resume.pdf',
+                event_category: 'Resume',
+                event_label: 'Download'
+            });
         });
     });
 
@@ -1105,15 +1113,13 @@ function initializeAnalyticsTracking() {
     const projectLinks = document.querySelectorAll('.project-link, [href*="github.com"], [href*="linkedin.com"]');
     projectLinks.forEach(link => {
         link.addEventListener('click', () => {
-            if (typeof gtag !== 'undefined') {
-                const linkText = link.textContent.trim();
-                const linkHref = link.href;
-                gtag('event', 'click', {
-                    event_category: 'External Link',
-                    event_label: linkText,
-                    event_value: linkHref
-                });
-            }
+            const linkText = link.textContent.trim();
+            const linkHref = link.href;
+            trackEvent('click', {
+                event_category: 'External Link',
+                event_label: linkText,
+                event_value: linkHref
+            });
         });
     });
 
@@ -1121,12 +1127,10 @@ function initializeAnalyticsTracking() {
     const contactForm = document.querySelector('.contact-form');
     if (contactForm) {
         contactForm.addEventListener('submit', () => {
-            if (typeof gtag !== 'undefined') {
-                gtag('event', 'form_submit', {
-                    event_category: 'Contact',
-                    event_label: 'Contact Form'
-                });
-            }
+            trackEvent('form_submit', {
+                event_category: 'Contact',
+                event_label: 'Contact Form'
+            });
         });
     }
 
@@ -1134,8 +1138,8 @@ function initializeAnalyticsTracking() {
     const sections = document.querySelectorAll('section[id]');
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
-            if (entry.isIntersecting && typeof gtag !== 'undefined') {
-                gtag('event', 'scroll', {
+            if (entry.isIntersecting) {
+                trackEvent('scroll', {
                     event_category: 'Navigation',
                     event_label: `Section: ${entry.target.id}`
                 });

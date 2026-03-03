@@ -19,7 +19,10 @@ module.exports = {
         highlightNavLink: 'readonly',
         isValidEmail: 'readonly',
         typeWriter: 'readonly',
-        gtag: 'readonly'
+        gtag: 'readonly',
+        amplitude: 'readonly',
+        sessionReplay: 'readonly',
+        trackEvent: 'readonly'
     },
     rules: {
         // Error Prevention
