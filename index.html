@@ -628,31 +628,39 @@
         <i class="fas fa-chevron-up"></i>
     </button>
 
-    <!-- Analytics Options -->
-
-    <!-- Google tag (gtag.js) -->
+    <!-- Analytics: Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-700Z9GSSDN"></script>
     <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', 'G-700Z9GSSDN');
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-700Z9GSSDN');
     </script>
 
-    <!-- Option 2: GoatCounter (Free, Privacy-First) -->
-    <!-- Sign up at goatcounter.com and replace 'anishnair' with your code -->
-    <!--
-    <script data-goatcounter="https://anishnair.goatcounter.com/count"
-            async src="//gc.zgo.at/count.js"></script>
-    -->
-
-    <!-- Option 3: Umami (Self-hosted, Open Source) -->
-    <!-- Deploy Umami and replace with your domain and website-id -->
-    <!--
-    <script async src="https://analytics.yourdomain.com/script.js"
-            data-website-id="your-website-id"></script>
-    -->
+    <!-- Analytics: Amplitude (with Session Replay & Autocapture) -->
+    <script src="https://cdn.amplitude.com/script/499c4c50f399b31d4c8092ccdbb92467.js"></script>
+    <script>
+        window.amplitude.add(window.sessionReplay.plugin({sampleRate: 1}));
+        window.amplitude.init('499c4c50f399b31d4c8092ccdbb92467', {
+            "fetchRemoteConfig": true,
+            "autocapture": {
+                "attribution": true,
+                "fileDownloads": true,
+                "formInteractions": true,
+                "pageViews": true,
+                "sessions": true,
+                "elementInteractions": true,
+                "networkTracking": true,
+                "webVitals": true,
+                "frustrationInteractions": {
+                    "thrashedCursor": true,
+                    "errorClicks": true,
+                    "deadClicks": true,
+                    "rageClicks": true
+                }
+            }
+        });
+    </script>
 
     <script>
         // GitHub Configuration - Update this with your GitHub username
