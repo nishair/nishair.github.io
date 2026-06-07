@@ -238,83 +238,74 @@
                         <button class="filter-btn" data-filter="automation">Automation</button>
                     </div>
                     <div class="all-projects-grid" id="all-projects-grid">
-                        <!-- Static example projects with filtering -->
-                        <div class="project-card" data-category="data-engineering">
-                            <div class="project-image">
-                                <img src="images/projects/data-pipeline.jpg" alt="Data Pipeline Project"
-                                     onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                                <div class="project-placeholder" style="display: none;">
-                                    <i class="fas fa-database"></i>
-                                </div>
-                            </div>
-                            <div class="project-content">
-                                <h3>Sample Data Pipeline</h3>
-                                <p>A scalable data pipeline built with Apache Spark and Python for processing large datasets.</p>
-                                <div class="project-tech">
-                                    <span class="tech-tag">Python</span>
-                                    <span class="tech-tag">Apache Spark</span>
-                                    <span class="tech-tag">AWS</span>
-                                </div>
-                                <div class="project-links">
-                                    <a href="#" class="project-link">
-                                        <i class="fab fa-github"></i> Code
-                                    </a>
-                                    <a href="#" class="project-link">
-                                        <i class="fas fa-external-link-alt"></i> Demo
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-
                         <div class="project-card" data-category="web-development">
                             <div class="project-image">
-                                <img src="images/projects/react-dashboard.jpg" alt="React Dashboard Project"
-                                     onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                                <div class="project-placeholder" style="display: none;">
-                                    <i class="fas fa-code"></i>
+                                <div class="project-placeholder" style="display: flex;">
+                                    <i class="fas fa-chart-line"></i>
                                 </div>
                             </div>
                             <div class="project-content">
-                                <h3>React Dashboard</h3>
-                                <p>Modern dashboard application built with React and TypeScript for data visualization.</p>
+                                <h3>ACAI — Analytics for Designers</h3>
+                                <p>Designer-first analytics platform that transforms GA4, Amplitude, and Mixpanel data into actionable insights. Available as a Figma plugin and full-stack web app with AI-powered recommendations.</p>
                                 <div class="project-tech">
-                                    <span class="tech-tag">React</span>
+                                    <span class="tech-tag">Next.js</span>
                                     <span class="tech-tag">TypeScript</span>
-                                    <span class="tech-tag">D3.js</span>
+                                    <span class="tech-tag">Node.js</span>
+                                    <span class="tech-tag">PostgreSQL</span>
+                                    <span class="tech-tag">Claude AI</span>
                                 </div>
                                 <div class="project-links">
-                                    <a href="#" class="project-link">
+                                    <a href="https://github.com/nishair/acai" class="project-link" target="_blank" rel="noopener">
                                         <i class="fab fa-github"></i> Code
                                     </a>
-                                    <a href="#" class="project-link">
+                                    <a href="https://acai.vercel.app" class="project-link" target="_blank" rel="noopener">
                                         <i class="fas fa-external-link-alt"></i> Live
                                     </a>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="project-card" data-category="machine-learning">
+                        <div class="project-card" data-category="data-engineering">
                             <div class="project-image">
-                                <img src="images/projects/ml-prediction.jpg" alt="ML Prediction Model Project"
-                                     onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                                <div class="project-placeholder" style="display: none;">
-                                    <i class="fas fa-brain"></i>
+                                <div class="project-placeholder" style="display: flex;">
+                                    <i class="fas fa-store"></i>
                                 </div>
                             </div>
                             <div class="project-content">
-                                <h3>ML Prediction Model</h3>
-                                <p>Machine learning model for predictive analytics using scikit-learn and TensorFlow.</p>
+                                <h3>Metric Pulse — E-commerce Analytics Pipeline</h3>
+                                <p>End-to-end ETL pipeline extracting sales data from Shopify, WooCommerce, and Commercetools. Computes CLV, RFM segmentation, churn probability, and loads results into PostgreSQL for analysis.</p>
                                 <div class="project-tech">
                                     <span class="tech-tag">Python</span>
-                                    <span class="tech-tag">TensorFlow</span>
-                                    <span class="tech-tag">Scikit-learn</span>
+                                    <span class="tech-tag">PostgreSQL</span>
+                                    <span class="tech-tag">Docker</span>
+                                    <span class="tech-tag">ETL</span>
                                 </div>
                                 <div class="project-links">
-                                    <a href="#" class="project-link">
+                                    <a href="https://github.com/nishair/metric-pulse" class="project-link" target="_blank" rel="noopener">
                                         <i class="fab fa-github"></i> Code
                                     </a>
-                                    <a href="#" class="project-link">
-                                        <i class="fas fa-file-alt"></i> Paper
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="project-card" data-category="data-engineering">
+                            <div class="project-image">
+                                <div class="project-placeholder" style="display: flex;">
+                                    <i class="fas fa-cloud-sun"></i>
+                                </div>
+                            </div>
+                            <div class="project-content">
+                                <h3>Sky Sense — Weather Data Aggregator</h3>
+                                <p>Multi-source weather data aggregation system integrating OpenWeather and NOAA APIs. Standardizes formats, stores historical data, and runs anomaly detection and trend analysis.</p>
+                                <div class="project-tech">
+                                    <span class="tech-tag">Node.js</span>
+                                    <span class="tech-tag">TypeScript</span>
+                                    <span class="tech-tag">Docker</span>
+                                    <span class="tech-tag">REST APIs</span>
+                                </div>
+                                <div class="project-links">
+                                    <a href="https://github.com/nishair/sky-sense" class="project-link" target="_blank" rel="noopener">
+                                        <i class="fab fa-github"></i> Code
                                     </a>
                                 </div>
                             </div>
@@ -675,21 +666,25 @@
 
             // Enhanced project descriptions - Add custom descriptions for your repositories
             projectDescriptions: {
-                // Example: 'repository-name': {
-                //     description: 'Custom description that overrides GitHub description',
-                //     longDescription: 'Detailed description for the project card',
-                //     highlights: ['Key feature 1', 'Key feature 2', 'Key feature 3'],
-                //     demoUrl: 'https://your-demo-url.com',
-                //     category: 'data-engineering' // or 'web-development', 'machine-learning', 'automation'
-                // }
-
-                // Add your project descriptions here:
-                // 'my-data-pipeline': {
-                //     description: 'Scalable ETL pipeline processing 1M+ records daily',
-                //     longDescription: 'A production-ready data pipeline built with Apache Spark and Python that processes over 1 million healthcare records daily, featuring automated data quality checks and real-time monitoring.',
-                //     highlights: ['Apache Spark', 'Real-time processing', 'Data quality checks'],
-                //     category: 'data-engineering'
-                // }
+                'acai': {
+                    description: 'Designer-first analytics platform powered by AI',
+                    longDescription: 'Transforms GA4, Amplitude, and Mixpanel data into actionable insights. Available as a Figma plugin and web app with AI-powered recommendations via Claude and Groq.',
+                    highlights: ['Figma plugin', 'Multi-source analytics', 'AI insights'],
+                    demoUrl: 'https://acai.vercel.app',
+                    category: 'web-development'
+                },
+                'metric-pulse': {
+                    description: 'E-commerce ETL pipeline with CLV and RFM analytics',
+                    longDescription: 'Extracts sales data from Shopify, WooCommerce, and Commercetools. Computes Customer Lifetime Value, RFM segmentation, and churn probability, loading results into PostgreSQL.',
+                    highlights: ['Multi-platform ETL', 'CLV calculation', 'Customer segmentation'],
+                    category: 'data-engineering'
+                },
+                'sky-sense': {
+                    description: 'Multi-source weather data aggregation and trend analysis',
+                    longDescription: 'Integrates OpenWeather and NOAA APIs to collect, standardize, and store historical weather data. Includes anomaly detection, trend analysis, and configurable scheduling.',
+                    highlights: ['Multi-API integration', 'Anomaly detection', 'Historical data warehouse'],
+                    category: 'data-engineering'
+                }
             },
 
             // Enable README fetching for enhanced descriptions
